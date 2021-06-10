@@ -280,7 +280,7 @@ def pre_processing(tweets):
     pre_processed_tweets = list()
     # Remove stop words
     for tweet in tqdm(tweets_tokenized, desc="Remove stop word"):
-        pre_processed_tweets.append(''.join(stop_words(tweet)))
+        pre_processed_tweets.append(' '.join(stop_words(tweet)))
 
 
     return pre_processed_tweets
