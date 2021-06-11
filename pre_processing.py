@@ -259,7 +259,7 @@ def pre_processing(tweets):
         #remove symbol
         tweets[i] = re.sub('[!"#$%&\'()*+,/:;<=>?@[\\]^_`{|}~]',' ', tweets[i])
         #remove punctuation
-        tweets[i] = re.sub(r'[^\w\s]',' ', tweets[i])
+        #tweets[i] = re.sub(r'[^\w\s]',' ', tweets[i])
 
     result = list()
 
@@ -280,7 +280,7 @@ def pre_processing(tweets):
     pre_processed_tweets = list()
     # Remove stop words
     for tweet in tqdm(tweets_tokenized, desc="Remove stop word"):
-        pre_processed_tweets.append(' '.join(stop_words(tweet)))
+        pre_processed_tweets.append(stop_words(tweet))
 
 
     return pre_processed_tweets
@@ -292,7 +292,7 @@ def tokenization(tweets):
 
 def stop_words(tweet):
     stop = stopwords.words('english')
-    tweets_tokenized = [word for word in tweet if word not in stop]
+    tweets_tokenized = [word for word in tweet if word not in stop and len(word) > 2]
 
     return tweets_tokenized
 
