@@ -1,16 +1,16 @@
 import re
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from nltk.stem.lancaster import LancasterStemmer
 import pickle
-from langdetect import detect
 from tqdm import tqdm
 import nltk
+import numpy as np
 
-nltk.download('punkt')
-nltk.download('stopwords')
+
 
 def pre_processing(tweets):
+    nltk.download('punkt')
+    nltk.download('stopwords')
 
     abbreviations = {
         "$" : " dollar ",
