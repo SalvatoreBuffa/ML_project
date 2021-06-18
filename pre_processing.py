@@ -359,3 +359,15 @@ def process_tweet(tweet):
     tweet = re.sub(r"you'll", "you will", tweet)
 
     return tweet
+
+
+def creazione_modello_GloVe(filename):
+    f = open(filename, encoding="utf8")
+    embeding_index = {}
+    for line in f:
+        values = line.split()
+        word = values[0]
+        coefs = np.asarray(values[1:], dtype="float32")
+        embeding_index[word] = coefs
+    f.close()
+    return embeding_index
