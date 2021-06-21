@@ -4,5 +4,6 @@
 /__pycache__
 /IMDB/dataset
 /IMDB/models
+/IMDB/logs
 /SLS/dataset
 /SLS/models
