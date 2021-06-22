@@ -1,14 +1,13 @@
 import re
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-import pickle
 from tqdm import tqdm
 import nltk
 import numpy as np
 
 
 
-def pre_processing(tweets):
+def pre_processing(phrase):
     nltk.download('punkt')
     nltk.download('stopwords')
 
@@ -195,11 +194,11 @@ def pre_processing(tweets):
         "qpsa" : "what happens", 
         "ratchet" : "rude",
         "rbtl" : "read between the lines",
-        "rlrt" : "real life retweet", 
+        "rlrt" : "real life rephrase", 
         "rofl" : "rolling on the floor laughing",
         "roflol" : "rolling on the floor laughing out loud",
         "rotflmao" : "rolling on the floor laughing my ass off",
-        "rt" : "retweet",
+        "rt" : "rephrase",
         "ruok" : "are you ok",
         "sfw" : "safe for work",
         "sk8" : "skate",
@@ -218,7 +217,7 @@ def pre_processing(tweets):
         "til" : "today i learned",
         "tl;dr" : "too long i did not read",
         "tldr" : "too long i did not read",
-        "tmb" : "tweet me back",
+        "tmb" : "phrase me back",
         "tntl" : "trying not to laugh",
         "ttyl" : "talk to you later",
         "u" : "you",
@@ -245,120 +244,120 @@ def pre_processing(tweets):
     urlPattern = r"((http://)[^ ]*|(https://)[^ ]*|( www\.)[^ ]*)"
     userPattern = '@[^\s]+'
 
-    for i in tqdm(range(0, len(tweets)), desc="Processing tweets:"):
+    for i in tqdm(range(0, len(phrase)), desc="Processing phrase:"):
         #lower case
-        tweets[i] = tweets[i].lower()
-        #process tweets
-        tweets[i] = process_tweet(tweets[i])
+        phrase[i] = phrase[i].lower()
+        #process phrase
+        phrase[i] = process_phrase(phrase[i])
         #remove url
-        tweets[i] = re.sub(urlPattern,' ', tweets[i])
+        phrase[i] = re.sub(urlPattern,' ', phrase[i])
         #remove user tag
-        tweets[i] = re.sub(userPattern,' ', tweets[i])
+        phrase[i] = re.sub(userPattern,' ', phrase[i])
         #remove end-line character
-        tweets[i] = tweets[i].replace("\n", " ")
+        phrase[i] = phrase[i].replace("\n", " ")
         #remove symbol
-        tweets[i] = re.sub('[!"#$%&\'()*+,/:;<=>?@[\\]^_`{|}~]',' ', tweets[i])
+        phrase[i] = re.sub('[!"#$%&\'()*+,/:;<=>?@[\\]^_`{|}~]',' ', phrase[i])
         #remove punctuation
-        #tweets[i] = re.sub(r'[^\w\s]',' ', tweets[i])
+        #phrase[i] = re.sub(r'[^\w\s]',' ', phrase[i])
 
     result = list()
 
     # replace abbreviations
-    for tweet in tqdm(tweets, desc="word tokenize process"):
-        for word in word_tokenize(tweet):
+    for phrase in tqdm(phrase, desc="word tokenize process"):
+        for word in word_tokenize(phrase):
             if word in abbreviations.keys():
-                tweet = re.sub(word, abbreviations[word], tweet)
+                phrase = re.sub(word, abbreviations[word], phrase)
 
-        result.append(tweet)
+        result.append(phrase)
 
-    tweets = result
+    phrase = result
 
 
     # tokenization : In this each entry will be broken into set of words
-    tweets_tokenized = tokenization(tweets)
+    phrase_tokenized = tokenization(phrase)
 
-    pre_processed_tweets = list()
+    pre_processed_phrase = list()
     # Remove stop words
-    for tweet in tqdm(tweets_tokenized, desc="Remove stop word"):
-        pre_processed_tweets.append(stop_words(tweet))
+    for phrase in tqdm(phrase_tokenized, desc="Remove stop word"):
+        pre_processed_phrase.append(stop_words(phrase))
 
 
-    return pre_processed_tweets
+    return pre_processed_phrase
 
-def tokenization(tweets):
-    tweets_tokenized = [word_tokenize(tweet) for tweet in tweets]
+def tokenization(phrase):
+    phrase_tokenized = [word_tokenize(phrase) for phrase in phrase]
 
-    return tweets_tokenized
+    return phrase_tokenized
 
-def stop_words(tweet):
+def stop_words(phrase):
     stop = stopwords.words('english')
-    tweets_tokenized = [word for word in tweet if word not in stop and len(word) > 2]
+    phrase_tokenized = [word for word in phrase if word not in stop and len(word) > 2]
 
-    return tweets_tokenized
+    return phrase_tokenized
 
 
-def process_tweet(tweet):
-    tweet = re.sub(r"there's", "there is", tweet)
-    tweet = re.sub(r"we're", "we are", tweet)
-    tweet = re.sub(r"won't", "will not", tweet)
-    tweet = re.sub(r"wasn't", "was not", tweet)
-    tweet = re.sub(r"aren't", "are not", tweet)
-    tweet = re.sub(r"isn't", "is not", tweet)
-    tweet = re.sub(r"haven't", "have not", tweet)
-    tweet = re.sub(r"hasn't", "has not", tweet)
-    tweet = re.sub(r"he's", "he is", tweet)
-    tweet = re.sub(r"it's", "it is", tweet)
-    tweet = re.sub(r"shouldn't", "should not", tweet)
-    tweet = re.sub(r"wouldn't", "would not", tweet)
-    tweet = re.sub(r"i'm", "i am", tweet)
-    tweet = re.sub(r"i\x89Ûªm", "i am", tweet)
-    tweet = re.sub(r"here's", "here is", tweet)
-    tweet = re.sub(r"you've", "you have", tweet)
-    tweet = re.sub(r"you\x89Ûªve", "you have", tweet)
-    tweet = re.sub(r"we're", "we are", tweet)
-    tweet = re.sub(r"what's", "what is", tweet)
-    tweet = re.sub(r"couldn't", "could not", tweet)
-    tweet = re.sub(r"it\x89Ûªs", "it is", tweet)
-    tweet = re.sub(r"doesn\x89Ûªt", "does not", tweet)
-    tweet = re.sub(r"here\x89Ûªs", "here is", tweet)
-    tweet = re.sub(r"who's", "who is", tweet)
-    tweet = re.sub(r"i\x89Ûªve", "i have", tweet)
-    tweet = re.sub(r"can\x89Ûªt", "cannot", tweet)
-    tweet = re.sub(r"would've", "would have", tweet)
-    tweet = re.sub(r"it'll", "it will", tweet)
-    tweet = re.sub(r"we'll", "we will", tweet)
-    tweet = re.sub(r"wouldn\x89Ûªt", "would not", tweet)
-    tweet = re.sub(r"We've", "we have", tweet)
-    tweet = re.sub(r"he'll", "he will", tweet)
-    tweet = re.sub(r"y'all", "you all", tweet)
-    tweet = re.sub(r"didn't", "did not", tweet)
-    tweet = re.sub(r"they'll", "they will", tweet)
-    tweet = re.sub(r"they'd", "they would", tweet)
-    tweet = re.sub(r"that\x89Ûªs", "that is", tweet)
-    tweet = re.sub(r"they've", "they have", tweet)
-    tweet = re.sub(r"should've", "should have", tweet)
-    tweet = re.sub(r"you\x89Ûªre", "you are", tweet)
-    tweet = re.sub(r"where's", "where is", tweet)
-    tweet = re.sub(r"don\x89Ûªt", "do not", tweet)
-    tweet = re.sub(r"we'd", "we would", tweet)
-    tweet = re.sub(r"i'll", "i will", tweet)
-    tweet = re.sub(r"weren't", "were not", tweet)
-    tweet = re.sub(r"they're", "they are", tweet)
-    tweet = re.sub(r"you\x89Ûªll", "you will", tweet)
-    tweet = re.sub(r"i\x89Ûªd", "i would", tweet)
-    tweet = re.sub(r"let's", "let us", tweet)
-    tweet = re.sub(r"it's", "it is", tweet)
-    tweet = re.sub(r"can't", "cannot", tweet)
-    tweet = re.sub(r"don't", "do not", tweet)
-    tweet = re.sub(r"you're", "you are", tweet)
-    tweet = re.sub(r"i've", "i have", tweet)
-    tweet = re.sub(r"that's", "that is", tweet)
-    tweet = re.sub(r"doesn't", "does not", tweet)
-    tweet = re.sub(r"i'd", "i would", tweet)
-    tweet = re.sub(r"ain't", "am not", tweet)
-    tweet = re.sub(r"you'll", "you will", tweet)
+def process_phrase(phrase):
+    phrase = re.sub(r"there's", "there is", phrase)
+    phrase = re.sub(r"we're", "we are", phrase)
+    phrase = re.sub(r"won't", "will not", phrase)
+    phrase = re.sub(r"wasn't", "was not", phrase)
+    phrase = re.sub(r"aren't", "are not", phrase)
+    phrase = re.sub(r"isn't", "is not", phrase)
+    phrase = re.sub(r"haven't", "have not", phrase)
+    phrase = re.sub(r"hasn't", "has not", phrase)
+    phrase = re.sub(r"he's", "he is", phrase)
+    phrase = re.sub(r"it's", "it is", phrase)
+    phrase = re.sub(r"shouldn't", "should not", phrase)
+    phrase = re.sub(r"wouldn't", "would not", phrase)
+    phrase = re.sub(r"i'm", "i am", phrase)
+    phrase = re.sub(r"i\x89Ûªm", "i am", phrase)
+    phrase = re.sub(r"here's", "here is", phrase)
+    phrase = re.sub(r"you've", "you have", phrase)
+    phrase = re.sub(r"you\x89Ûªve", "you have", phrase)
+    phrase = re.sub(r"we're", "we are", phrase)
+    phrase = re.sub(r"what's", "what is", phrase)
+    phrase = re.sub(r"couldn't", "could not", phrase)
+    phrase = re.sub(r"it\x89Ûªs", "it is", phrase)
+    phrase = re.sub(r"doesn\x89Ûªt", "does not", phrase)
+    phrase = re.sub(r"here\x89Ûªs", "here is", phrase)
+    phrase = re.sub(r"who's", "who is", phrase)
+    phrase = re.sub(r"i\x89Ûªve", "i have", phrase)
+    phrase = re.sub(r"can\x89Ûªt", "cannot", phrase)
+    phrase = re.sub(r"would've", "would have", phrase)
+    phrase = re.sub(r"it'll", "it will", phrase)
+    phrase = re.sub(r"we'll", "we will", phrase)
+    phrase = re.sub(r"wouldn\x89Ûªt", "would not", phrase)
+    phrase = re.sub(r"We've", "we have", phrase)
+    phrase = re.sub(r"he'll", "he will", phrase)
+    phrase = re.sub(r"y'all", "you all", phrase)
+    phrase = re.sub(r"didn't", "did not", phrase)
+    phrase = re.sub(r"they'll", "they will", phrase)
+    phrase = re.sub(r"they'd", "they would", phrase)
+    phrase = re.sub(r"that\x89Ûªs", "that is", phrase)
+    phrase = re.sub(r"they've", "they have", phrase)
+    phrase = re.sub(r"should've", "should have", phrase)
+    phrase = re.sub(r"you\x89Ûªre", "you are", phrase)
+    phrase = re.sub(r"where's", "where is", phrase)
+    phrase = re.sub(r"don\x89Ûªt", "do not", phrase)
+    phrase = re.sub(r"we'd", "we would", phrase)
+    phrase = re.sub(r"i'll", "i will", phrase)
+    phrase = re.sub(r"weren't", "were not", phrase)
+    phrase = re.sub(r"they're", "they are", phrase)
+    phrase = re.sub(r"you\x89Ûªll", "you will", phrase)
+    phrase = re.sub(r"i\x89Ûªd", "i would", phrase)
+    phrase = re.sub(r"let's", "let us", phrase)
+    phrase = re.sub(r"it's", "it is", phrase)
+    phrase = re.sub(r"can't", "cannot", phrase)
+    phrase = re.sub(r"don't", "do not", phrase)
+    phrase = re.sub(r"you're", "you are", phrase)
+    phrase = re.sub(r"i've", "i have", phrase)
+    phrase = re.sub(r"that's", "that is", phrase)
+    phrase = re.sub(r"doesn't", "does not", phrase)
+    phrase = re.sub(r"i'd", "i would", phrase)
+    phrase = re.sub(r"ain't", "am not", phrase)
+    phrase = re.sub(r"you'll", "you will", phrase)
 
-    return tweet
+    return phrase
 
 
 def creazione_modello_GloVe(filename):
