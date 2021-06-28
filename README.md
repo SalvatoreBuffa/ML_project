@@ -59,7 +59,11 @@ IMDB:
 
 Di seguito vengono mostrati tutti i link a cui è possibile accedere per osservare i risultati ottenuti:
 
-- Dataset SLS con variazione di Hidden Units, Dropout, Optmizer: https://tensorboard.dev/experiment/kXqr7OGLQoi1VPUm1H6Nww/
-- Dataset SLS con variazione del learning rate: https://tensorboard.dev/experiment/Yj2SeXwOS1K6x3A2T2IQmw/#hparams
-- Dataset IMDB con variazione di Hidden Units, Dropout, Optmizer: https://tensorboard.dev/experiment/GVI9mRlMSD27E1FBhY1jnA/#scalars
-- Dataset IMDB con variazione del learning rate: https://tensorboard.dev/experiment/0Qklwg2CQ1yQYqQoIZ0Ahg/#hparams
+- Dataset SLS con variazione di Hidden Units, Dropout, Optmizer: 
+https://tensorboard.dev/experiment/kXqr7OGLQoi1VPUm1H6Nww/
+- Dataset SLS con variazione del learning rate: 
+https://tensorboard.dev/experiment/Yj2SeXwOS1K6x3A2T2IQmw/#hparams
+- Dataset IMDB con variazione di Hidden Units, Dropout, Optmizer: 
+https://tensorboard.dev/experiment/GVI9mRlMSD27E1FBhY1jnA/#scalars
+- Dataset IMDB con variazione del learning rate: 
+https://tensorboard.dev/experiment/0Qklwg2CQ1yQYqQoIZ0Ahg/#hparams
