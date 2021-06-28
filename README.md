@@ -36,16 +36,30 @@ Di cui la migliore configurazione per il dataset SLS risulta essere:
 - Optimizer: "RMSProp"
 
 Mentre per il dataset IMDB:
-- Hidden Units: 
-- Dropout: 
-- Optimizer:
+- Hidden Units: 16
+- Dropout: 0.9
+- Optimizer: "RMSProp"
 
 Infine, una volta trovato la migliore configurazione per cercare di migliorare ulteriormente i risulati si è deciso di provare anche a modificare il learning rate con i seguenti valori:
 - learning rate: 0.0001, 0.001, 0.005, 0.009, 0.1, 0.2, 0.25, 0.3
 
+Di seguito dunque, vengono riportate le migliori configurazioni dei modelli BiGRU con meccanismo di attenzione per dataset.
+
+SLS:
+- Hidden Units: 16
+- Dropout: 0.4
+- Optimizer: "RMSProp"
+- learning rate: 0.005
+
+IMDB:
+- Hidden Units: 16
+- Dropout: 0.9
+- Optimizer: "RMSProp"
+- learning rate: 0.009
+
 Di seguito vengono mostrati tutti i link a cui è possibile accedere per osservare i risultati ottenuti:
 
 - Dataset SLS con variazione di Hidden Units, Dropout, Optmizer: https://tensorboard.dev/experiment/kXqr7OGLQoi1VPUm1H6Nww/
-- Dataset SLS con variazione del learning rate:
-- Dataset IMDB con variazione di Hidden Units, Dropout, Optmizer:
-- Dataset IMDB con variazione del learning rate:
+- Dataset SLS con variazione del learning rate: https://tensorboard.dev/experiment/Yj2SeXwOS1K6x3A2T2IQmw/#hparams
+- Dataset IMDB con variazione di Hidden Units, Dropout, Optmizer: https://tensorboard.dev/experiment/GVI9mRlMSD27E1FBhY1jnA/#scalars
+- Dataset IMDB con variazione del learning rate: https://tensorboard.dev/experiment/0Qklwg2CQ1yQYqQoIZ0Ahg/#hparams
